@@ -27,10 +27,11 @@ class _RegisterPageState extends State<RegisterPage>
   bool _obscureConfirmPassword = true;
 
   // Warna Tema Konsisten (sama persis dengan LoginPage)
-  static const Color primaryGold = Color.fromARGB(255, 182, 155, 75);
-  static const Color primaryDarkGold = Color.fromARGB(255, 148, 122, 50);
-  static const Color textDark = Color(0xFF1E242B);
-  static const Color textMuted = Color(0xFF6B7280);
+  static const Color primaryGold = Color(0xFF167B72);
+  static const Color primaryDarkGold = Color(0xFF105E58);
+  static const Color textDark = Color(0xFF173A3A);
+  static const Color textMuted = Color(0xFF617875);
+  static const Color backgroundWarm = Color(0xFFEAF2EF);
 
   @override
   void initState() {
@@ -47,12 +48,10 @@ class _RegisterPageState extends State<RegisterPage>
       curve: Curves.easeOut,
     );
 
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.12),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(parent: _animController, curve: Curves.easeOutCubic),
-    );
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.12), end: Offset.zero).animate(
+          CurvedAnimation(parent: _animController, curve: Curves.easeOutCubic),
+        );
 
     _scaleAnimation = Tween<double>(begin: 0.75, end: 1.0).animate(
       CurvedAnimation(parent: _animController, curve: Curves.easeOutBack),
@@ -100,10 +99,7 @@ class _RegisterPageState extends State<RegisterPage>
                 height: 95,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [
-                      Color.fromARGB(255, 218, 185, 93),
-                      primaryGold,
-                    ],
+                    colors: [Color(0xFF45B6A2), primaryGold],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -131,8 +127,8 @@ class _RegisterPageState extends State<RegisterPage>
           'Create Account',
           style: TextStyle(
             fontSize: 26,
-            fontWeight: FontWeight.w800,
-            letterSpacing: 0.3,
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.3,
             color: primaryGold,
           ),
         ),
@@ -141,6 +137,7 @@ class _RegisterPageState extends State<RegisterPage>
           'Daftar sekarang untuk mulai berbelanja',
           style: TextStyle(
             fontSize: 14,
+            fontWeight: FontWeight.w500,
             color: textMuted,
           ),
         ),
@@ -164,36 +161,17 @@ class _RegisterPageState extends State<RegisterPage>
         const SizedBox(height: 8),
         TextFormField(
           controller: _nameController,
-          style: const TextStyle(fontSize: 15, color: textDark),
-          decoration: InputDecoration(
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+            color: textDark,
+          ),
+          decoration: const InputDecoration(
             hintText: 'Masukkan nama lengkap',
-            hintStyle: TextStyle(color: textMuted.withOpacity(0.6), fontSize: 14),
-            prefixIcon: const Icon(
+            prefixIcon: Icon(
               Icons.person_outline_rounded,
               color: primaryGold,
               size: 22,
-            ),
-            filled: true,
-            fillColor: const Color(0xFFFBFBFB),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 16,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.grey.shade300, width: 1.2),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: const BorderSide(color: primaryGold, width: 2),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.red.shade400, width: 1.2),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.red.shade400, width: 2),
             ),
           ),
           validator: (value) {
@@ -227,36 +205,17 @@ class _RegisterPageState extends State<RegisterPage>
         TextFormField(
           controller: _emailController,
           keyboardType: TextInputType.emailAddress,
-          style: const TextStyle(fontSize: 15, color: textDark),
-          decoration: InputDecoration(
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+            color: textDark,
+          ),
+          decoration: const InputDecoration(
             hintText: 'nama@email.com',
-            hintStyle: TextStyle(color: textMuted.withOpacity(0.6), fontSize: 14),
-            prefixIcon: const Icon(
+            prefixIcon: Icon(
               Icons.email_outlined,
               color: primaryGold,
               size: 22,
-            ),
-            filled: true,
-            fillColor: const Color(0xFFFBFBFB),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 16,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.grey.shade300, width: 1.2),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: const BorderSide(color: primaryGold, width: 2),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.red.shade400, width: 1.2),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.red.shade400, width: 2),
             ),
           ),
           validator: (value) {
@@ -293,10 +252,13 @@ class _RegisterPageState extends State<RegisterPage>
         TextFormField(
           controller: _passwordController,
           obscureText: _obscurePassword,
-          style: const TextStyle(fontSize: 15, color: textDark),
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+            color: textDark,
+          ),
           decoration: InputDecoration(
             hintText: 'Minimal 6 karakter',
-            hintStyle: TextStyle(color: textMuted.withOpacity(0.6), fontSize: 14),
             prefixIcon: const Icon(
               Icons.lock_outline_rounded,
               color: primaryGold,
@@ -315,28 +277,6 @@ class _RegisterPageState extends State<RegisterPage>
                   _obscurePassword = !_obscurePassword;
                 });
               },
-            ),
-            filled: true,
-            fillColor: const Color(0xFFFBFBFB),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 16,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.grey.shade300, width: 1.2),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: const BorderSide(color: primaryGold, width: 2),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.red.shade400, width: 1.2),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.red.shade400, width: 2),
             ),
           ),
           validator: (value) {
@@ -370,10 +310,13 @@ class _RegisterPageState extends State<RegisterPage>
         TextFormField(
           controller: _confirmPasswordController,
           obscureText: _obscureConfirmPassword,
-          style: const TextStyle(fontSize: 15, color: textDark),
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+            color: textDark,
+          ),
           decoration: InputDecoration(
             hintText: 'Ulangi password',
-            hintStyle: TextStyle(color: textMuted.withOpacity(0.6), fontSize: 14),
             prefixIcon: const Icon(
               Icons.lock_reset_rounded,
               color: primaryGold,
@@ -392,28 +335,6 @@ class _RegisterPageState extends State<RegisterPage>
                   _obscureConfirmPassword = !_obscureConfirmPassword;
                 });
               },
-            ),
-            filled: true,
-            fillColor: const Color(0xFFFBFBFB),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 16,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.grey.shade300, width: 1.2),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: const BorderSide(color: primaryGold, width: 2),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.red.shade400, width: 1.2),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.red.shade400, width: 2),
             ),
           ),
           validator: (value) {
@@ -434,15 +355,11 @@ class _RegisterPageState extends State<RegisterPage>
   Widget _buildRegisterButton(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 52,
+      height: 54,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(24),
         gradient: const LinearGradient(
-          colors: [
-            Color.fromARGB(255, 218, 185, 93),
-            primaryGold,
-            primaryDarkGold,
-          ],
+          colors: [Color(0xFF45B6A2), primaryGold, primaryDarkGold],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -459,7 +376,7 @@ class _RegisterPageState extends State<RegisterPage>
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(24),
           ),
         ),
         onPressed: () {
@@ -515,7 +432,7 @@ class _RegisterPageState extends State<RegisterPage>
               'Daftar Sekarang',
               style: TextStyle(
                 fontSize: 16,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w700,
                 color: Colors.white,
                 letterSpacing: 0.8,
               ),
@@ -538,23 +455,19 @@ class _RegisterPageState extends State<RegisterPage>
           Navigator.pushReplacementNamed(context, '/login_page');
         }
       },
-      style: TextButton.styleFrom(
-        foregroundColor: primaryGold,
-      ),
+      style: TextButton.styleFrom(foregroundColor: primaryGold),
       child: RichText(
         text: const TextSpan(
           text: 'Sudah punya akun? ',
           style: TextStyle(
             color: textMuted,
             fontSize: 14,
+            fontWeight: FontWeight.w500,
           ),
           children: [
             TextSpan(
               text: 'Masuk di sini',
-              style: TextStyle(
-                color: primaryGold,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(color: primaryGold, fontWeight: FontWeight.w700),
             ),
           ],
         ),
@@ -572,11 +485,7 @@ class _RegisterPageState extends State<RegisterPage>
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color(0xFFFCFAF6),
-              Color(0xFFF7F2E8),
-              Color(0xFFFAF7F2),
-            ],
+            colors: [Color(0xFFE7F1ED), backgroundWarm, Color(0xFFF5F7F1)],
           ),
         ),
         child: Stack(
@@ -604,6 +513,19 @@ class _RegisterPageState extends State<RegisterPage>
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: primaryGold.withOpacity(0.08),
+                ),
+              ),
+            ),
+            // Lingkaran ornamen kecil tengah-kanan
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.45,
+              right: -25,
+              child: Container(
+                width: 90,
+                height: 90,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: primaryGold.withOpacity(0.05),
                 ),
               ),
             ),
@@ -652,7 +574,7 @@ class _RegisterPageState extends State<RegisterPage>
                           vertical: 30.0,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.92),
+                          color: Colors.white.withOpacity(0.72),
                           borderRadius: BorderRadius.circular(28),
                           boxShadow: [
                             BoxShadow(
@@ -704,4 +626,3 @@ class _RegisterPageState extends State<RegisterPage>
     );
   }
 }
-
