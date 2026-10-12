@@ -1,5 +1,7 @@
 import 'package:ecom_flutter/pages/cart_page.dart';
+import 'package:ecom_flutter/pages/detail_chat.dart';
 import 'package:ecom_flutter/pages/home_page.dart';
+import 'package:ecom_flutter/pages/list_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:ecom_flutter/pages/login_page.dart';
 import 'package:ecom_flutter/pages/register_page.dart';
@@ -212,6 +214,14 @@ class MyApp extends StatelessWidget {
         '/change_password_page': (context) => const ChangePasswordPage(),
         '/cart_page': (context) => const CartPage(),
         '/home_page': (context) => const HomePage(),
+        '/list_chat': (context) => const ChatListPage(),
+        '/detail_chat': (context) {
+          final arguments = ModalRoute.of(context)?.settings.arguments;
+          final contactName = arguments is Map && arguments['contactName']
+              ? arguments['contactName'] as String
+              : 'anonim';
+          return ChatScreen(contactName: contactName);
+        },
       },
     );
   }

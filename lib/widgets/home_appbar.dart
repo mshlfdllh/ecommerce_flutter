@@ -54,12 +54,10 @@ class HomeAppbar extends StatelessWidget {
               ),
               const Spacer(),
               IconButton(
-                tooltip: 'Notifikasi',
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.notifications_none_rounded,
-                  color: Color(0xFF173A3A),
-                ),
+                tooltip: 'Chat',
+                onPressed: () => Navigator.pushNamed(context, '/list_chat'),
+
+                icon: const Icon(Icons.message_sharp, color: Color(0xFF173A3A)),
               ),
             ],
           ),
