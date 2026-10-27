@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ecom_flutter/widgets/glass_container.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -16,28 +17,24 @@ class _RegisterPageState extends State<RegisterPage>
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
-  // Animasi
   late AnimationController _animController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
   late Animation<double> _scaleAnimation;
 
-  // State untuk toggle visibilitas password
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
-  // Warna Tema Konsisten (sama persis dengan LoginPage)
-  static const Color primaryGold = Color(0xFF167B72);
-  static const Color primaryDarkGold = Color(0xFF105E58);
-  static const Color textDark = Color(0xFF173A3A);
-  static const Color textMuted = Color(0xFF617875);
-  static const Color backgroundWarm = Color(0xFFEAF2EF);
+  // Ordinary Warm Aesthetic Palette
+  static const Color primaryTerracotta = Color(0xFFA9442C);
+  static const Color textDark = Color(0xFF211E1B);
+  static const Color textMuted = Color(0xFF7D776E);
+  static const Color borderWarm = Color(0xFFE8E2D8);
 
   @override
   void initState() {
     super.initState();
 
-    // Setup controller animasi sederhana & halus
     _animController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 900),
@@ -48,10 +45,12 @@ class _RegisterPageState extends State<RegisterPage>
       curve: Curves.easeOut,
     );
 
-    _slideAnimation =
-        Tween<Offset>(begin: const Offset(0, 0.12), end: Offset.zero).animate(
-          CurvedAnimation(parent: _animController, curve: Curves.easeOutCubic),
-        );
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.12),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(parent: _animController, curve: Curves.easeOutCubic),
+    );
 
     _scaleAnimation = Tween<double>(begin: 0.75, end: 1.0).animate(
       CurvedAnimation(parent: _animController, curve: Curves.easeOutBack),
@@ -70,73 +69,54 @@ class _RegisterPageState extends State<RegisterPage>
     super.dispose();
   }
 
-  // Logo E-Commerce dengan efek animasi Scale & Glow
   Widget _buildLogo() {
     return ScaleTransition(
       scale: _scaleAnimation,
       child: Container(
-        width: 95,
-        height: 95,
-        margin: const EdgeInsets.only(bottom: 18),
+        width: 76,
+        height: 76,
+        margin: const EdgeInsets.only(bottom: 14),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
+          color: primaryTerracotta,
           boxShadow: [
             BoxShadow(
-              color: primaryGold.withOpacity(0.3),
-              blurRadius: 22,
-              offset: const Offset(0, 8),
+              color: primaryTerracotta.withOpacity(0.3),
+              blurRadius: 18,
+              offset: const Offset(0, 6),
             ),
           ],
         ),
-        child: ClipOval(
-          child: Image.asset(
-            'assets/images/logo.png',
-            fit: BoxFit.contain,
-            errorBuilder: (context, error, stackTrace) {
-              // Fallback widget jika asset gambar belum dimuat
-              return Container(
-                width: 95,
-                height: 95,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color(0xFF45B6A2), primaryGold],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.shopping_bag_rounded,
-                  size: 48,
-                  color: Colors.white,
-                ),
-              );
-            },
+        child: const Center(
+          child: Icon(
+            Icons.person_add_alt_1_rounded,
+            size: 38,
+            color: Colors.white,
           ),
         ),
       ),
     );
   }
 
-  // Tampilan Header
   Widget _buildHeader() {
     return Column(
       children: [
         _buildLogo(),
         const Text(
-          'Create Account',
+          'Daftar Akun Baru',
           style: TextStyle(
-            fontSize: 26,
-            fontWeight: FontWeight.w700,
-            letterSpacing: -0.3,
-            color: primaryGold,
+            fontSize: 22,
+            fontWeight: FontWeight.w900,
+            letterSpacing: -0.4,
+            color: textDark,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 4),
         const Text(
-          'Daftar sekarang untuk mulai berbelanja',
+          'Bergabung untuk menikmati pilihan produk terbaik',
+          textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 12,
             fontWeight: FontWeight.w500,
             color: textMuted,
           ),
@@ -145,229 +125,61 @@ class _RegisterPageState extends State<RegisterPage>
     );
   }
 
-  // Input Field Nama Lengkap
-  Widget _buildNameField() {
+  Widget _buildField({
+    required TextEditingController controller,
+    required String label,
+    required String hint,
+    required IconData icon,
+    bool obscure = false,
+    Widget? suffixIcon,
+    TextInputType? keyboardType,
+    String? Function(String?)? validator,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Nama Lengkap',
-          style: TextStyle(
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: textDark,
+          ),
+        ),
+        const SizedBox(height: 6),
+        TextFormField(
+          controller: controller,
+          obscureText: obscure,
+          keyboardType: keyboardType,
+          style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: textDark,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextFormField(
-          controller: _nameController,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-            color: textDark,
-          ),
-          decoration: const InputDecoration(
-            hintText: 'Masukkan nama lengkap',
-            prefixIcon: Icon(
-              Icons.person_outline_rounded,
-              color: primaryGold,
-              size: 22,
-            ),
-          ),
-          validator: (value) {
-            if (value == null || value.trim().isEmpty) {
-              return "Nama lengkap tidak boleh kosong";
-            }
-            if (value.trim().length < 3) {
-              return "Nama minimal 3 karakter";
-            }
-            return null;
-          },
-        ),
-      ],
-    );
-  }
-
-  // Input Field Email
-  Widget _buildEmailField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Email',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: textDark,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextFormField(
-          controller: _emailController,
-          keyboardType: TextInputType.emailAddress,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-            color: textDark,
-          ),
-          decoration: const InputDecoration(
-            hintText: 'nama@email.com',
-            prefixIcon: Icon(
-              Icons.email_outlined,
-              color: primaryGold,
-              size: 22,
-            ),
-          ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "Email tidak boleh kosong";
-            }
-            if (RegExp(
-                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-                ).hasMatch(value) ==
-                false) {
-              return 'Email tidak valid';
-            }
-            return null;
-          },
-        ),
-      ],
-    );
-  }
-
-  // Input Field Password
-  Widget _buildPasswordField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Password',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: textDark,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextFormField(
-          controller: _passwordController,
-          obscureText: _obscurePassword,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
             color: textDark,
           ),
           decoration: InputDecoration(
-            hintText: 'Minimal 6 karakter',
-            prefixIcon: const Icon(
-              Icons.lock_outline_rounded,
-              color: primaryGold,
-              size: 22,
-            ),
-            suffixIcon: IconButton(
-              icon: Icon(
-                _obscurePassword
-                    ? Icons.visibility_off_outlined
-                    : Icons.visibility_outlined,
-                color: textMuted,
-                size: 22,
-              ),
-              onPressed: () {
-                setState(() {
-                  _obscurePassword = !_obscurePassword;
-                });
-              },
-            ),
+            hintText: hint,
+            hintStyle: const TextStyle(color: Color(0xFF9E988F), fontSize: 13),
+            prefixIcon: Icon(icon, color: primaryTerracotta, size: 20),
+            suffixIcon: suffixIcon,
           ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "Password tidak boleh kosong";
-            }
-            if (value.length < 6) {
-              return 'Password harus lebih daripada 6 karakter';
-            }
-            return null;
-          },
+          validator: validator,
         ),
       ],
     );
   }
 
-  // Input Field Konfirmasi Password
-  Widget _buildConfirmPasswordField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Konfirmasi Password',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: textDark,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextFormField(
-          controller: _confirmPasswordController,
-          obscureText: _obscureConfirmPassword,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-            color: textDark,
-          ),
-          decoration: InputDecoration(
-            hintText: 'Ulangi password',
-            prefixIcon: const Icon(
-              Icons.lock_reset_rounded,
-              color: primaryGold,
-              size: 22,
-            ),
-            suffixIcon: IconButton(
-              icon: Icon(
-                _obscureConfirmPassword
-                    ? Icons.visibility_off_outlined
-                    : Icons.visibility_outlined,
-                color: textMuted,
-                size: 22,
-              ),
-              onPressed: () {
-                setState(() {
-                  _obscureConfirmPassword = !_obscureConfirmPassword;
-                });
-              },
-            ),
-          ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "Konfirmasi password tidak boleh kosong";
-            }
-            if (value != _passwordController.text) {
-              return 'Password tidak cocok';
-            }
-            return null;
-          },
-        ),
-      ],
-    );
-  }
-
-  // Tombol Register
   Widget _buildRegisterButton(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 54,
+      height: 52,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        gradient: const LinearGradient(
-          colors: [Color(0xFF45B6A2), primaryGold, primaryDarkGold],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: primaryTerracotta,
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: primaryGold.withOpacity(0.35),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
+            color: primaryTerracotta.withOpacity(0.35),
+            blurRadius: 14,
+            offset: const Offset(0, 5),
           ),
         ],
       ),
@@ -376,53 +188,32 @@ class _RegisterPageState extends State<RegisterPage>
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(16),
           ),
         ),
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            // Tampilkan snackbar sukses dan arahkan ke halaman login
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: const Row(
                   children: [
-                    Icon(Icons.check_circle_outline, color: Colors.white),
-                    SizedBox(width: 10),
-                    Text('Registrasi berhasil! Silakan masuk.'),
+                    Icon(Icons.check_circle_rounded, color: Colors.white),
+                    SizedBox(width: 8),
+                    Text('Registrasi berhasil! Silakan masuk ke akunmu.'),
                   ],
                 ),
-                backgroundColor: Colors.green.shade700,
+                backgroundColor: textDark,
                 behavior: SnackBarBehavior.floating,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(14),
                 ),
               ),
             );
-
-            // Kembali ke halaman login
             if (Navigator.canPop(context)) {
               Navigator.pop(context);
             } else {
               Navigator.pushReplacementNamed(context, '/login_page');
             }
-          } else {
-            // Tampilkan pesan error
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: const Row(
-                  children: [
-                    Icon(Icons.error_outline, color: Colors.white),
-                    SizedBox(width: 10),
-                    Text('Harap lengkapi semua kolom dengan benar'),
-                  ],
-                ),
-                backgroundColor: Colors.red.shade600,
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            );
           }
         },
         child: const Row(
@@ -431,21 +222,24 @@ class _RegisterPageState extends State<RegisterPage>
             Text(
               'Daftar Sekarang',
               style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
+                fontSize: 15,
+                fontWeight: FontWeight.w800,
                 color: Colors.white,
-                letterSpacing: 0.8,
+                letterSpacing: 0.3,
               ),
             ),
             SizedBox(width: 8),
-            Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 20),
+            Icon(
+              Icons.arrow_forward_rounded,
+              color: Colors.white,
+              size: 18,
+            ),
           ],
         ),
       ),
     );
   }
 
-  // Link kembali ke Login
   Widget _buildLoginLink(BuildContext context) {
     return TextButton(
       onPressed: () {
@@ -455,19 +249,21 @@ class _RegisterPageState extends State<RegisterPage>
           Navigator.pushReplacementNamed(context, '/login_page');
         }
       },
-      style: TextButton.styleFrom(foregroundColor: primaryGold),
       child: RichText(
         text: const TextSpan(
           text: 'Sudah punya akun? ',
           style: TextStyle(
             color: textMuted,
-            fontSize: 14,
+            fontSize: 13,
             fontWeight: FontWeight.w500,
           ),
           children: [
             TextSpan(
               text: 'Masuk di sini',
-              style: TextStyle(color: primaryGold, fontWeight: FontWeight.w700),
+              style: TextStyle(
+                color: primaryTerracotta,
+                fontWeight: FontWeight.w800,
+              ),
             ),
           ],
         ),
@@ -478,140 +274,182 @@ class _RegisterPageState extends State<RegisterPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFFE7F1ED), backgroundWarm, Color(0xFFF5F7F1)],
-          ),
-        ),
-        child: Stack(
-          children: [
-            // Lingkaran ornamen ambient atas-kanan
-            Positioned(
-              top: -60,
-              right: -50,
-              child: Container(
-                width: 220,
-                height: 220,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: primaryGold.withOpacity(0.12),
-                ),
-              ),
-            ),
-            // Lingkaran ornamen ambient bawah-kiri
-            Positioned(
-              bottom: -50,
-              left: -40,
-              child: Container(
-                width: 180,
-                height: 180,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: primaryGold.withOpacity(0.08),
-                ),
-              ),
-            ),
-            // Lingkaran ornamen kecil tengah-kanan
-            Positioned(
-              top: MediaQuery.of(context).size.height * 0.45,
-              right: -25,
-              child: Container(
-                width: 90,
-                height: 90,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: primaryGold.withOpacity(0.05),
-                ),
-              ),
-            ),
-
-            // Tombol Back di pojok kiri atas
-            SafeArea(
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0, top: 8.0),
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back_ios_new_rounded,
-                      color: primaryGold,
-                      size: 22,
-                    ),
-                    onPressed: () {
+      backgroundColor: const Color(0xFFF7F4EE),
+      body: LiquidBackground(
+        child: SafeArea(
+          child: Stack(
+            children: [
+              // Back Button
+              Positioned(
+                top: 8,
+                left: 16,
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(14),
+                    onTap: () {
                       if (Navigator.canPop(context)) {
                         Navigator.pop(context);
                       } else {
                         Navigator.pushReplacementNamed(context, '/login_page');
                       }
                     },
-                    tooltip: 'Kembali ke Login',
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                          color: borderWarm,
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: textDark,
+                        size: 18,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
 
-            // Konten Utama dengan animasi Fade & Slide
-            SafeArea(
-              child: Center(
+              // Main Content
+              Center(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 24.0,
+                    horizontal: 22.0,
                     vertical: 24.0,
                   ),
                   child: FadeTransition(
                     opacity: _fadeAnimation,
                     child: SlideTransition(
                       position: _slideAnimation,
-                      child: Container(
+                      child: ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 420),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 26.0,
-                          vertical: 30.0,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.72),
-                          borderRadius: BorderRadius.circular(28),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.04),
-                              blurRadius: 24,
-                              offset: const Offset(0, 10),
-                            ),
-                            BoxShadow(
-                              color: primaryGold.withOpacity(0.06),
-                              blurRadius: 40,
-                              offset: const Offset(0, 16),
-                            ),
-                          ],
-                          border: Border.all(
-                            color: Colors.white.withOpacity(0.85),
-                            width: 1.5,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24.0,
+                            vertical: 28.0,
                           ),
-                        ),
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              _buildHeader(),
-                              const SizedBox(height: 24),
-                              _buildNameField(),
-                              const SizedBox(height: 16),
-                              _buildEmailField(),
-                              const SizedBox(height: 16),
-                              _buildPasswordField(),
-                              const SizedBox(height: 16),
-                              _buildConfirmPasswordField(),
-                              const SizedBox(height: 26),
-                              _buildRegisterButton(context),
-                              const SizedBox(height: 12),
-                              _buildLoginLink(context),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(28),
+                            border: Border.all(color: borderWarm, width: 1.2),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF211E1B).withOpacity(0.06),
+                                blurRadius: 24,
+                                offset: const Offset(0, 8),
+                              ),
                             ],
+                          ),
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                _buildHeader(),
+                                const SizedBox(height: 20),
+                                _buildField(
+                                  controller: _nameController,
+                                  label: 'Nama Lengkap',
+                                  hint: 'Masukkan nama lengkap',
+                                  icon: Icons.person_outline_rounded,
+                                  validator: (val) {
+                                    if (val == null || val.trim().isEmpty) {
+                                      return 'Nama tidak boleh kosong';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                const SizedBox(height: 14),
+                                _buildField(
+                                  controller: _emailController,
+                                  label: 'Email',
+                                  hint: 'nama@email.com',
+                                  icon: Icons.email_outlined,
+                                  keyboardType: TextInputType.emailAddress,
+                                  validator: (val) {
+                                    if (val == null || val.isEmpty) {
+                                      return 'Email tidak boleh kosong';
+                                    }
+                                    if (!RegExp(
+                                            r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$")
+                                        .hasMatch(val)) {
+                                      return 'Format email tidak valid';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                const SizedBox(height: 14),
+                                _buildField(
+                                  controller: _passwordController,
+                                  label: 'Kata Sandi',
+                                  hint: 'Minimal 6 karakter',
+                                  icon: Icons.lock_outline_rounded,
+                                  obscure: _obscurePassword,
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _obscurePassword
+                                          ? Icons.visibility_off_outlined
+                                          : Icons.visibility_outlined,
+                                      color: textMuted,
+                                      size: 18,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _obscurePassword = !_obscurePassword;
+                                      });
+                                    },
+                                  ),
+                                  validator: (val) {
+                                    if (val == null || val.isEmpty) {
+                                      return 'Kata sandi tidak boleh kosong';
+                                    }
+                                    if (val.length < 6) {
+                                      return 'Kata sandi minimal 6 karakter';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                const SizedBox(height: 14),
+                                _buildField(
+                                  controller: _confirmPasswordController,
+                                  label: 'Konfirmasi Kata Sandi',
+                                  hint: 'Ulangi kata sandi',
+                                  icon: Icons.lock_clock_outlined,
+                                  obscure: _obscureConfirmPassword,
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _obscureConfirmPassword
+                                          ? Icons.visibility_off_outlined
+                                          : Icons.visibility_outlined,
+                                      color: textMuted,
+                                      size: 18,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _obscureConfirmPassword =
+                                            !_obscureConfirmPassword;
+                                      });
+                                    },
+                                  ),
+                                  validator: (val) {
+                                    if (val == null || val.isEmpty) {
+                                      return 'Konfirmasi kata sandi tidak boleh kosong';
+                                    }
+                                    if (val != _passwordController.text) {
+                                      return 'Kata sandi tidak cocok';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                const SizedBox(height: 24),
+                                _buildRegisterButton(context),
+                                const SizedBox(height: 12),
+                                _buildLoginLink(context),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -619,8 +457,8 @@ class _RegisterPageState extends State<RegisterPage>
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

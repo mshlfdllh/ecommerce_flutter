@@ -1,7 +1,8 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
+/// Reusable warm frosted glassmorphic container inspired by "ordinary." aesthetic.
+/// Features backdrop blur, soft ivory/white opacity, warm hairline borders, and subtle drop shadows.
 class GlassContainer extends StatelessWidget {
   final Widget child;
   final double borderRadius;
@@ -16,13 +17,14 @@ class GlassContainer extends StatelessWidget {
   final BoxShape shape;
   final List<BoxShadow>? boxShadow;
   final Gradient? gradient;
+  final Color? borderColor;
 
   const GlassContainer({
     super.key,
     required this.child,
-    this.borderRadius = 24,
+    this.borderRadius = 22,
     this.blur = 18,
-    this.opacity = 0.22,
+    this.opacity = 0.82,
     this.color,
     this.padding,
     this.margin,
@@ -32,6 +34,7 @@ class GlassContainer extends StatelessWidget {
     this.shape = BoxShape.rectangle,
     this.boxShadow,
     this.gradient,
+    this.borderColor,
   });
 
   @override
@@ -47,13 +50,17 @@ class GlassContainer extends StatelessWidget {
       decoration: BoxDecoration(
         shape: shape,
         borderRadius: shape == BoxShape.circle ? null : effectiveBorderRadius,
-        boxShadow:
-            boxShadow ??
+        boxShadow: boxShadow ??
             [
               BoxShadow(
-                color: const Color(0xFF1C514A).withValues(alpha: 0.08),
-                blurRadius: 24,
-                offset: const Offset(0, 10),
+                color: const Color(0xFF211E1B).withOpacity(0.04),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
+              ),
+              BoxShadow(
+                color: const Color(0xFFA9442C).withOpacity(0.02),
+                blurRadius: 10,
+                offset: const Offset(0, 2),
               ),
             ],
       ),
@@ -67,28 +74,20 @@ class GlassContainer extends StatelessWidget {
             padding: padding,
             decoration: BoxDecoration(
               shape: shape,
-              borderRadius: shape == BoxShape.circle
-                  ? null
-                  : effectiveBorderRadius,
-              gradient:
-                  gradient ??
+              borderRadius: shape == BoxShape.circle ? null : effectiveBorderRadius,
+              gradient: gradient ??
                   LinearGradient(
                     colors: [
-                      (color ?? const Color(0xFFF8FFFC)).withValues(
-                        alpha: opacity + 0.15,
-                      ),
-                      (color ?? const Color(0xFFE3F4EF)).withValues(
-                        alpha: opacity,
-                      ),
+                      (color ?? Colors.white).withOpacity((opacity + 0.1).clamp(0.0, 1.0)),
+                      (color ?? const Color(0xFFFAF7F2)).withOpacity(opacity),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
-              border:
-                  border ??
+              border: border ??
                   Border.all(
-                    color: Colors.white.withValues(alpha: 0.62),
-                    width: 1.3,
+                    color: borderColor ?? const Color(0xFFE8E2D8).withOpacity(0.9),
+                    width: 1.2,
                   ),
             ),
             child: child,
@@ -99,95 +98,111 @@ class GlassContainer extends StatelessWidget {
   }
 }
 
+/// Warm aesthetic oat-cream liquid background with delicate warm terracotta & sand glow orbs
 class LiquidBackground extends StatelessWidget {
   final Widget child;
-  final bool isDark;
 
-  const LiquidBackground({super.key, required this.child, this.isDark = false});
+  const LiquidBackground({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: isDark
-              ? const [Color(0xFF102C2C), Color(0xFF152C35), Color(0xFF282B33)]
-              : const [Color(0xFFE7F1ED), Color(0xFFF5F7F1), Color(0xFFE8F0F3)],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xFFF7F4EE), // Warm oat cream
+            Color(0xFFF5F1EA), // Soft linen
+            Color(0xFFEDE6DA), // Warm sand
+          ],
         ),
       ),
       child: Stack(
+        fit: StackFit.expand,
         children: [
-          // Broad translucent ribbons keep the backdrop fluid without obscuring content.
+          // Ambient Warm Terracotta Glow (Top-Right)
           Positioned(
-            top: -70,
-            left: -90,
-            child: Transform.rotate(
-              angle: -0.16,
-              child: Container(
-                width: 560,
-                height: 190,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  gradient: LinearGradient(
-                    colors: [
-                      const Color(0xFF43B9A7)
-                          .withValues(alpha: isDark ? 0.2 : 0.2),
-                      const Color(0xFF43B9A7).withValues(alpha: 0),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 220,
-            right: -260,
-            child: Transform.rotate(
-              angle: -0.42,
-              child: Container(
-                width: 620,
-                height: 150,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(90),
-                  gradient: LinearGradient(
-                    colors: [
-                      const Color(0xFFFF8D75)
-                          .withValues(alpha: isDark ? 0.2 : 0.16),
-                      const Color(0xFFFF8D75).withValues(alpha: 0),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: -85,
-            left: -180,
-            child: Transform.rotate(
-              angle: 0.18,
-              child: Container(
-                width: 620,
-                height: 180,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  gradient: LinearGradient(
-                    colors: [
-                      const Color(0xFFB7D66A)
-                          .withValues(alpha: isDark ? 0.18 : 0.17),
-                      const Color(0xFFB7D66A).withValues(alpha: 0),
-                    ],
-                  ),
+            top: -90,
+            right: -70,
+            child: Container(
+              width: 320,
+              height: 320,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    const Color(0xFFA9442C).withOpacity(0.08),
+                    const Color(0xFFA9442C).withOpacity(0.0),
+                  ],
                 ),
               ),
             ),
           ),
 
-          // Content Layer
-          child,
+          // Ambient Warm Sand Arch Glow (Center-Right)
+          Positioned(
+            top: 180,
+            right: -100,
+            child: Container(
+              width: 360,
+              height: 360,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    const Color(0xFFE2D6C5).withOpacity(0.4),
+                    const Color(0xFFE2D6C5).withOpacity(0.0),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          // Ambient Warm Clay Glow (Center-Left)
+          Positioned(
+            top: 420,
+            left: -110,
+            child: Container(
+              width: 300,
+              height: 300,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    const Color(0xFFEAD8C7).withOpacity(0.35),
+                    const Color(0xFFEAD8C7).withOpacity(0.0),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          // Ambient Peach Sand Glow (Bottom-Right)
+          Positioned(
+            bottom: -80,
+            right: -50,
+            child: Container(
+              width: 320,
+              height: 320,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    const Color(0xFFF2DBC9).withOpacity(0.3),
+                    const Color(0xFFF2DBC9).withOpacity(0.0),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          // Main child content
+          Positioned.fill(
+            child: child,
+          ),
         ],
       ),
     );
